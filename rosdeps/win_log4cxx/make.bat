@@ -14,7 +14,7 @@ if X%COMMAND%==X set COMMAND=help
 if X%COMMAND%==Xhelp goto Help
 if X%COMMAND%==Xclean goto Clean
 if X%COMMAND%==Xinstall goto Install
-if X%COMMAND%==Xall goto Compile
+if X%COMMAND%==Xall goto Install
 goto Help
 
 :Help
