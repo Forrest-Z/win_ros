@@ -1,42 +1,54 @@
-@ECHO OFF
+@echo off
 
-IF X%1==Xclean GOTO Clean
-IF X%1==Xcompile GOTO Compile
-IF X%1==Xupload GOTO Upload
-IF X%1==Xall GOTO Compile
+rem ************************** Variables ********************************
 
-ECHO "Invalid usage: call with args from ['clean', 'compile', 'upload', 'all']"
-GOTO End
+set PWD=%~dp0
+set COMMAND=%1
+set CMAKE_INSTALL_PREFIX=C:\opt\rosdeps\hydro\x86
+
+rem ************************** Options ********************************
+
+if X%COMMAND%==X set COMMAND=help
+if X%COMMAND%==Xhelp goto Help
+if X%COMMAND%==Xclean goto Clean
+if X%COMMAND%==Xcompile goto Compile
+if X%COMMAND%==Xinstall goto Install
+if X%COMMAND%==Xall goto Compile
+goto Help
+
+:Help
+echo.
+echo Usage: make [subcommand]
+echo.
+echo   compile    Cmake and nmake the static library
+echo   install    Collected headers and static library together
+echo   clean      Remove build directory
+echo.
+goto End
+
+rem ************************** Targets ********************************
 
 :Compile
-IF NOT EXIST %cd%\fakeroot (
-  set CMAKE_INSTALL_PREFIX=%cd%/fakeroot
-  mkdir build
-  mkdir fakeroot
-  cd build
-  cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=%CMAKE_INSTALL_PREFIX% ..
-  nmake
-  nmake install
-  cd ..
-  cd fakeroot
-  7z a -r bzip2-1.0.6-x86-vc10.zip *
-  cd ..
-) ELSE (
-  echo.
-  echo "Already built"
-)
-IF X%1==Xall GOTO Upload
-GOTO End
+mkdir %PWD%\build
+cd %PWD%\build
+cmake -G "NMake Makefiles" -DTINYXML_BUGGER_OFF_CATKIN=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX="%CMAKE_INSTALL_PREFIX%" ..
+nmake
+cd %PWD%
+if X%COMMAND%==Xall goto Install
+goto End
 
-:Upload
-scp fakeroot/bzip2*.zip files@files.yujinrobot.com:pub/windows/repo/libraries 
-GOTO End
+:Install
+cd %PWD%\build
+nmake install
+cd %PWD%
+if X%COMMAND%==Xall goto Clean
+goto End
 
 :Clean
-rd /S /Q %cd%\bin
-rd /S /Q %cd%\lib
-rd /S /Q %cd%\build
-rd /S /Q %cd%\fakeroot
-GOTO End
+echo "Cleaning build directory."
+rm -rf build
+rm -rf bin
+rm -rf lib
+goto End
 
 :End

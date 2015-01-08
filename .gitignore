@@ -27,3 +27,4 @@
 # Visual C++ cache files
 ipch
 *.sdf
+*.suo
