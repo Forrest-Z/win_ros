@@ -4,7 +4,7 @@ rem ************************** Variables ********************************
 
 set PWD=%~dp0
 set DIRECT=apache-log4cxx-0.10.0
-set BUILD=Debug
+set BUILD=Release
 set COMMAND=%1
 set CMAKE_INSTALL_PREFIX=C:\opt\rosdeps\hydro\x86
 
