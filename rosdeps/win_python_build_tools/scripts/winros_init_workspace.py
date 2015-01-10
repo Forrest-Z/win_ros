@@ -92,12 +92,9 @@ if __name__ == "__main__":
     text = win_ros.write_setup_bat(base_path)
 
     if args.track == "hydro":
-        populate(base_path, 'https://raw.github.com/ros-windows/win_ros/hydro-devel/msvc_hydro.rosinstall')
-        toplevel_cmake_url = 'https://raw.github.com/ros/catkin/0.5.69/cmake/toplevel.cmake'
-    elif args.track == "groovy":
-        populate(base_path, 'https://raw.github.com/ros-windows/win_ros/groovy-devel/msvc_groovy.rosinstall')
-        toplevel_cmake_url = 'https://raw.github.com/ros/catkin/groovy-devel/cmake/toplevel.cmake'
+        populate(base_path, 'https://raw.github.com/yuanboshe/win_ros/hydro-devel/msvc_hydro.rosinstall')
+        toplevel_cmake_url = 'https://raw.github.com/yuanboshe/catkin/win_ros/cmake/toplevel.cmake'
     else:
-        toplevel_cmake_url = 'https://raw.github.com/ros/catkin/0.5.69/cmake/toplevel.cmake'
+        toplevel_cmake_url = 'https://raw.github.com/yuanboshe/catkin/win_ros/cmake/toplevel.cmake'
 
     win_ros.write_toplevel_cmake(os.path.join(base_path, 'src'), toplevel_cmake_url)
