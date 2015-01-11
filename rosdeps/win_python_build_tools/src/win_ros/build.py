@@ -53,17 +53,13 @@ def read_template(tmplf):
 def fill_in_template(template, config_rosdeps_root, config_install_root, config_underlay_roots):
     return template % locals()
 
-def write_cmake_files(ws_path, track, config_underlays):
+def write_cmake_files(ws_path, track, config_underlays, config_rosdeps_root, config_install_root):
     '''
       Copy the windows specific rules (e.g. compiler flags) to the workspace path.
     '''
     template_dir = os.path.join(os.path.dirname(__file__), 'cmake')
     template = read_template(os.path.join(template_dir, "MsvcConfig.cmake"))
-    config_rosdeps_root="C:/opt/rosdeps/" + track + "/x86"
-    config_install_root = "C:/opt/ros/" + track + "/x86"
-    if config_underlays != "":
-        config_install_root = "C:/opt/overlay/" + track + "/x86"
-    contents = fill_in_template(template, config_rosdeps_root, config_install_root, config_underlays)
+    contents = fill_in_template(template, os.path.normpath(config_rosdeps_root), os.path.normpath(config_install_root), os.path.normpath(config_underlays))
     config_cmake_file = os.path.join( ws_path, "config.cmake")
     try:
         f = open(config_cmake_file, 'w')

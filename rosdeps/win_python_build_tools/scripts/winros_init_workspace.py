@@ -89,7 +89,7 @@ if __name__ == "__main__":
     except MultiProjectException as e:
         sys.stderr.write("ERROR in config: %s\n" % str(e))
         sys.exit(1)
-    text = win_ros.write_setup_bat(base_path)
+    #text = win_ros.write_setup_bat(base_path)
 
     if args.track == "hydro":
         populate(base_path, 'https://raw.github.com/yuanboshe/win_ros/hydro-devel/msvc_hydro.rosinstall')

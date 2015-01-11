@@ -48,8 +48,12 @@ def parse_args():
         formatter_class=argparse.RawTextHelpFormatter )
     parser.add_argument('-c', '--clean', action='store_true',
         help='remove build directory and configuration file [false].')
-    parser.add_argument('-u', '--underlays', action='store', default='',
-        help='semi-colon list of catkin workspaces to utilise [/opt/ros/hydro]')
+    parser.add_argument('-i', '--installpath', action='store', default='C:/opt/overlay/hydro/x86',
+        help='the path where to install [C:/opt/overlay/hydro/x86]')
+    parser.add_argument('-u', '--underlays', action='store', default='C:/opt/ros/hydro/x86',
+        help='the path where ros locate [C:/opt/ros/hydro/x86]')
+    parser.add_argument('-d', '--dependspath', action='store', default='C:/opt/rosdeps/hydro/x86',
+        help='the path where rosdeps locate [C:/opt/rosdeps/hydro/x86]')
     parser.add_argument('--track', action='store', default="hydro",
         help='retrieve rosinstalls relevant to this track [groovy|hydro][hydro]')
     return parser.parse_args()
@@ -88,7 +92,7 @@ if __name__ == "__main__":
     ##############################
     # Create
     ##############################
-    win_ros.write_cmake_files(ws_path, args.track, args.underlays)
+    win_ros.write_cmake_files(ws_path, args.track, args.underlays, args.dependspath, args.installpath)
     shutil.rmtree(build_path, ignore_errors=True)
     os.mkdir(build_path)
     print("--- build configuration initialised with defaults.")
